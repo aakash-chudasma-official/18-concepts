@@ -46,9 +46,9 @@ function allChapters(){
   const commit=()=>{if(cur.lines.length)chapters.push({...cur,blocks:joinLines(cur.lines)})};
   for(let j=0;j<lines.length;j++){
     const line=lines[j];
-    if(/^Chapter\s+\d+\s*[—–-]/i.test(line)){
+    if(/^Chapter\s+\d+\s*[:—–-]/i.test(line)){
      commit();const num=(line.match(/^Chapter\s+(\d+)/i)||[])[1]||"";
-     let title=line.replace(/^Chapter\s+\d+\s*[—–-]\s*/i,"");
+     let title=line.replace(/^Chapter\s+\d+\s*[:—–-]\s*/i,"");
      let k=j+1;
      while(k<lines.length&&title.length<65&&!/[.!?]$/.test(title)&&!/^(\d+\.\d+|Chapter|Knowledge Assessment)/i.test(lines[k])&&k<=j+2){
        title+=" "+lines[k];k++;
@@ -56,7 +56,7 @@ function allChapters(){
      j=k-1;
      cur={key:"b"+(i+1)+"-ch"+num,book:i+1,title:"Chapter "+num+": "+title,lines:[]};continue;
     }
-    if(/^Knowledge Assessment\b/i.test(line)&&cur.key.indexOf("assessment")<0){
+    if(/^(Knowledge Assessment|Knowledge Quiz|Knowledge Check|Review and Knowledge Quiz)\b/i.test(line)&&cur.key.indexOf("assessment")<0){
      commit();cur={key:"b"+(i+1)+"-assessment",book:i+1,title:"Knowledge Assessment & References",lines:[]};
     }
     cur.lines.push(line);
